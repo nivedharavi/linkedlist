@@ -1,0 +1,116 @@
+//
+// Created by Nivedha on 7/23/2017.
+//
+
+#ifndef LIKEDLISTPRACTICE_LIKEDLISTSECONG_H
+#define LIKEDLISTPRACTICE_LIKEDLISTSECONG_H
+#include <iostream>
+#include <stdint.h>
+
+
+typedef struct node{
+    int val;
+    struct node* next;
+}Node;
+
+class linked {
+private:
+       Node* root;
+        int size; // why private?
+
+    void destroy();
+    void copy(linked& other);
+public:
+    linked(linked& other); //copy constructor
+    linked(); //constructor
+    ~linked(); //destructor
+
+    void insert(int32_t val);
+    void remove(int32_t val);
+    bool find(int32_t val);
+
+
+
+};
+
+void linked::linked(){
+    root = NULL;
+    size = 0;
+}
+
+void linked::~linked(){
+    destroy();
+}
+
+void linked::destroy(){
+    node* mycurr = root;
+    node* prev;
+    while(mycurr!=NULL){
+    prev = mycurr;//store current location in temp variable
+        mycurr = mycurr->next; //store next location in cursor variable
+        delete prev; //when to use delete and when to use free? //deleter previous lovation
+    }
+    }
+
+void linked::linked(linked& other) {
+    copy(other);
+}
+
+void linked::copy(linked& other) {
+    this->root = NULL;
+    if(other.root==NULL){
+        return;
+    }
+    insert(other.root->val);
+    Node* curr = root;
+    Node* othercurr = other.root;
+    while(othercurr->next!=NULL){
+        curr->next=new Node();
+        curr = curr->next;
+        curr->val = othercurr->val;
+        othercurr = othercurr->next;
+    }
+}
+
+void linked::insert(int32_t val){
+    Node* x = new Node;
+    x->val=val ; //set val parameter to the value passed in
+    x->next = root; //what is this doing?? it is this.root??
+    root = x;
+    size++;
+
+}
+
+void linked::remove(int32_t val) {
+    Node* prev = NULL;
+    Node* curr = root;
+    while(curr!=NULL &&curr->val!=val){
+        prev = curr;
+        curr = root->next;
+    }
+    if (curr==NULL){
+        return;
+    }
+    prev->next = curr->next;;
+    size--;
+    delete curr;
+    //why check if prev is null?
+
+}
+
+ bool linked::find(int32_t val) {
+Node* curr = root;
+     while(curr->next!=NULL &&curr->val!=val){
+         curr = curr->next;
+     }
+     if (curr->next==NULL){
+         return false;
+     }
+     else{
+         return true;
+     }
+
+ }
+
+
+#endif //LIKEDLISTPRACTICE_LIKEDLISTSECONG_H
